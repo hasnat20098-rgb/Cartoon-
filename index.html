@@ -1,164 +1,356 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QH CARTOON MAKER - 30 Min Video</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#111;color:#fff}
-.top{background:#ff3b30;padding:14px;text-align:center}
-.top b{font-size:20px}
-.card{background:#1e1e1e;margin:12px;padding:14px;border-radius:14px}
-input,select,textarea{width:100%;padding:12px;border-radius:10px;border:none;background:#2a2a2a;color:#fff;margin-top:8px}
-button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:bold;margin-top:8px;cursor:pointer;font-size:15px}
-.btn-red{background:#ff3b30;color:#fff}
-.btn-green{background:#00a884;color:#fff}
-.btn-white{background:#fff;color:#000}
-#stage{width:100%;height:320px;background:linear-gradient(#87CEEB,#e8f8e8);border-radius:14px;position:relative;overflow:hidden;margin-top:10px}
-.char{position:absolute;bottom:40px;font-size:70px;transition:all 1s}
-.ground{position:absolute;bottom:0;left:0;right:0;height:40px;background:#4CAF50}
-.tree{position:absolute;bottom:35px;font-size:45px}
-.house{position:absolute;bottom:35px;right:15px;font-size:60px}
-.cloud{position:absolute;top:15px;font-size:35px;animation:move 8s linear infinite}
-@keyframes move{from{left:-50px}to{left:100%}}
-.bubble{position:absolute;top:25px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:10px 14px;border-radius:16px;max-width:85%;font-size:14px;font-weight:bold;display:none;z-index:5}
-.progress{height:8px;background:#333;border-radius:10px;overflow:hidden;margin-top:8px}
-.progress div{height:100%;background:#ff3b30;width:0%;transition:.3s}
-.sceneBtn{padding:8px 12px;background:#333;border:none;border-radius:20px;color:#fff;margin:4px;cursor:pointer}
-.sceneBtn.active{background:#ff3b30}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRADING BY RAHAT - ULTIMATE PRO V28</title>
+  <style>
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { margin: 0; background: #f6fef7; padding-bottom: 70px; }
+    header { position: sticky; top: 0; z-index: 99; background: #fff; padding: 12px; border-bottom: 2px solid #16a34a; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-weight: 900; color: #16a34a; font-size: 18px; }
+    .tabs { display: flex; gap: 8px; padding: 10px; overflow: auto; background: #fff; }
+    .tabs button { white-space: nowrap; border: 1.5px solid #16a34a; background: #fff; color: #16a34a; padding: 8px 14px; border-radius: 20px; font-weight: 700; cursor: pointer; }
+    .tabs button.active { background: #16a34a; color: #fff; }
+    .card { background: #fff; margin: 10px; border-radius: 14px; padding: 14px; border: 1px solid #d9f2e2; }
+    select, input { width: 100%; padding: 11px; border: 1.5px solid #cfeeda; border-radius: 10px; margin: 6px 0; }
+    .btn { width: 100%; background: #16a34a; color: #fff; border: 0; padding: 13px; border-radius: 11px; font-weight: 900; cursor: pointer; }
+    .row { display: flex; gap: 8px; }
+    .row > div { flex: 1; background: #f0fdf4; border-radius: 10px; padding: 10px; text-align: center; }
+    .bottom { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; display: flex; border-top: 2px solid #16a34a; z-index: 99; }
+    .bottom button { flex: 1; padding: 9px 1px; border: 0; background: #fff; font-weight: 700; font-size: 11px; cursor: pointer; }
+    .bottom button.active { color: #16a34a; }
+    #tv { height: 340px; background: #f0fdf4; }
+    #demoTv { height: 320px; background: #f0fdf4; }
+    .small { font-size: 13px; color: #555; line-height: 1.6; }
+    .win { color: #16a34a; font-weight: 900; }
+    .loss { color: #ef4444; font-weight: 900; }
+    .goodsig { background: #f0fdf4; border: 2px solid #16a34a; padding: 14px; border-radius: 12px; }
+    .buyBtn { background: #16a34a; color: #fff; border: 0; padding: 16px; border-radius: 12px; font-weight: 900; font-size: 18px; width: 100%; cursor: pointer; }
+    .sellBtn { background: #ef4444; color: #fff; border: 0; padding: 16px; border-radius: 12px; font-weight: 900; font-size: 18px; width: 100%; cursor: pointer; }
+    #alertBig { display: none; position: fixed; top: 60px; left: 10px; right: 10px; background: #ef4444; color: #fff; padding: 16px; border-radius: 14px; z-index: 999; text-align: center; font-weight: 900; }
+    .telegramBtn { display: inline-block; background: #0088cc; color: #fff; text-decoration: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; margin-top: 4px; }
+    .candleTimer { font-size: 18px; font-weight: 900; color: #16a34a; text-align: center; background: #f0fdf4; padding: 10px; border-radius: 10px; border: 1px dashed #16a34a; margin-bottom: 10px; }
+    .mmBox { background: #eff6ff; border: 1px solid #3b82f6; padding: 12px; border-radius: 12px; margin-top: 10px; }
+  </style>
 </head>
 <body>
-<div class="top"><b>🎬 QH CARTOON MAKER</b><div style="font-size:12px">Prompt দাও → 30 Min Cartoon Video রেডি!</div></div>
 
-<div class="card">
-<b>🎭 তোমার গল্প কি?</b>
-<textarea id="prompt" rows="2" placeholder="যেমন: Hasnat আর তার বিড়াল মিনি জঙ্গলে হারিয়ে গেল, তারপর...">Hasnat আর তার বিড়াল মিনি জঙ্গলে হারিয়ে গেল, তারপর একটা ভালো ভাল্লুক তাদের সাহায্য করলো</textarea>
-<div style="display:flex;gap:8px">
-<select id="char1"><option>👦 Hasnat - ছেলে</option><option>👧 Mim - মেয়ে</option><option>🦸 Hero - সুপারহিরো</option></select>
-<select id="char2"><option>🐱 Mini - বিড়াল</option><option>🐶 Tom - কুকুর</option><option>🐻 Ballu - ভাল্লুক</option></select>
-</div>
-<div style="display:flex;gap:8px">
-<select id="duration"><option value="5">⏱️ 5 মিনিটের Cartoon</option><option value="15">⏱️ 15 মিনিটের Cartoon</option><option value="30" selected>⏱️ 30 মিনিটের Cartoon</option></select>
-<select id="voice"><option value="1">🔊 বাংলা Voice</option><option value="0">🔇 Voice ছাড়া</option></select>
-</div>
-<button class="btn-red" onclick="makeCartoon()">✨ 🎬 CARTOON বানাও!</button>
-</div>
+<div id="alertBig">🔥 আসল সিগন্যাল আইছে!</div>
+<header>
+  <div>
+    <div class="logo">TRADING BY RAHAT</div>
+    <div class="small">V28 - Pure HTML Code</div>
+    <a href="https://t.me/bprahat" target="_blank" class="telegramBtn">📩 @bprahat</a>
+  </div>
+  <div>
+    <button onclick="toggleAlert()" id="alertBtn" style="background:#16a34a;color:#fff;border:0;padding:6px 10px;border-radius:8px;cursor:pointer">🔔 অ্যালার্ট অন</button><br>
+    <b>$ <input id="bal" value="50" style="width:50px"> ব্যালেন্স</b>
+  </div>
+</header>
 
-<div class="card">
-<div style="display:flex;justify-content:space-between"><b>📺 Preview - <span id="sceneTitle">Scene 1</span></b><span id="timer">00:00 / 30:00</span></div>
-<div id="stage">
-<div class="cloud">☁️</div><div class="cloud" style="top:40px;animation-delay:3s">☁️</div>
-<div class="tree" style="left:10px">🌳</div><div class="tree" style="left:90px">🌲</div>
-<div class="house">🏠</div>
-<div class="bubble" id="bubble"></div>
-<div class="char" id="c1" style="left:30px">👦</div>
-<div class="char" id="c2" style="left:120px;font-size:50px">🐱</div>
-<div class="ground"></div>
-</div>
-<div class="progress"><div id="prog"></div></div>
-<div id="sceneBtns" style="text-align:center;margin-top:8px"></div>
-<div style="display:flex;gap:8px;margin-top:8px">
-<button class="btn-green" onclick="playCartoon()" id="playBtn">▶️ Play Cartoon</button>
-<button class="btn-white" onclick="stopCartoon()">⏹️ Stop</button>
-</div>
-<button style="background:#ffcc00;color:#000" onclick="downloadVideo()">⬇️ 📹 Video Download করো (Record)</button>
-<div style="font-size:12px;color:#aaa;margin-top:8px;text-align:center">💡 Play চাপ দিলে Cartoon চলবো, Voice শুনবা, Download চাপ দিলে Record হইয়া Video Download হইবো!</div>
+<div class="tabs">
+  <button class="active" onclick="setCat('forex',this)">ফরেক্স রিয়েল</button>
+  <button onclick="setCat('otc',this)">কোটেক্স ওটিসি (OTC)</button>
+  <button onclick="setCat('crypto',this)">ক্রিপ্টো</button>
+  <button onclick="setCat('metal',this)">মেটাল/ওয়েল</button>
+  <button onclick="setCat('mm',this)">🛡️ মানি ম্যানেজমেন্ট</button>
 </div>
 
-<div class="card">
-<b>📝 Auto গল্প - Script</b>
-<div id="script" style="font-size:13px;line-height:1.7;color:#ccc;margin-top:8px">Prompt দিয়া Cartoon বানাও বাটন চাপ দাও, গল্প অটো বানাইয়া আসবো...</div>
+<!-- PAGE TRADE -->
+<div id="pageTrade">
+  <div class="card">
+    <div class="candleTimer" id="candleTimerDisplay">পরবর্তী ক্যান্ডেল শুরু হতে বাকি: 00:59</div>
+    <label><b>70+ মার্কেট থেকে বাছো:</b></label>
+    <select id="market" onchange="updatePrice();loadChart();"></select>
+    <div id="tv" style="margin-top:10px"></div>
+    <div class="row" style="margin-top:10px">
+      <div><div class="small">রেজিস্ট্যান্স</div><b id="res">--</b></div>
+      <div><div class="small">দাম</div><b id="price">--</b></div>
+      <div><div class="small">সাপোর্ট</div><b id="sup">--</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE SIGNAL -->
+<div id="pageSignal" style="display:none">
+  <div class="card">
+    <h3>📡 70+ মার্কেট স্ক্যানার ও ৫০টি স্ট্র্যাটেজি</h3>
+    <label><b>সিগন্যালের জন্য মার্কেট বাছো:</b></label>
+    <select id="sigMarket"></select>
+    <button class="btn" style="margin-top:12px" onclick="checkRealSignal()">📡 সিগন্যাল চেক করো</button>
+    <div id="signal" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- PAGE DEMO -->
+<div id="pageDemo" style="display:none">
+  <div class="card">
+    <h3>🎮 ডেমো প্র্যাকটিস</h3>
+    <div style="display:flex;justify-content:space-between"><b>ডেমো ব্যালেন্স: $<span id="demoBal">10000</span></b><button onclick="resetDemo()" style="background:#fff;border:1.5px solid #16a34a;color:#16a34a;border-radius:8px;padding:6px 10px;cursor:pointer">রিসেট</button></div>
+    <label style="margin-top:10px;display:block">মার্কেট বাছো:</label><select id="demoMarket"></select>
+    <div id="demoTv" style="margin-top:10px"></div>
+    <label>অ্যামাউন্ট ($):</label><input id="demoAmt" value="10">
+    <div class="row" style="margin-top:10px">
+      <div style="background:#fff;padding:0"><button class="buyBtn" onclick="startDemo('বাই')">বাই 🟢</button></div>
+      <div style="background:#fff;padding:0"><button class="sellBtn" onclick="startDemo('সেল')">সেল 🔴</button></div>
+    </div>
+    <div id="demoOut" class="small" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- PAGE HISTORY & STATS -->
+<div id="pageHistory" style="display:none">
+  <div class="card">
+    <h3>📊 উইন/লস স্ট্যাটিস্টিকস</h3>
+    <div class="row">
+      <div>মোট ট্রেড: <b id="stTotal">0</b></div>
+      <div>উইন: <b id="stWin" style="color:#16a34a">0</b></div>
+      <div>লস: <b id="stLoss" style="color:#ef4444">0</b></div>
+    </div>
+    <div style="margin-top:10px;text-align:center;font-weight:bold" id="stRatio">উইন রেট: ০%</div>
+    <hr style="margin:15px 0;border:0;border-top:1px solid #d9f2e2">
+    <input id="hMarket" placeholder="মার্কেট - EUR/USD">
+    <select id="hResult"><option value="উইন">উইন (Win)</option><option value="লস">লস (Loss)</option></select>
+    <button class="btn" onclick="addHistory()">+ ট্রেড হিস্টরি যোগ করুন</button>
+    <div id="histList" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- PAGE MM -->
+<div id="pageMm" style="display:none">
+  <div class="card">
+    <h3>🛡️ অ্যান্টি-লস মানি ম্যানেজমেন্ট</h3>
+    <p class="small">কখনোই অ্যাকাউন্ট লস হবে না যদি আপনি প্রতি ট্রেডে আপনার ব্যালেন্সের মাত্র ১% বা ২% রিস্ক নেন। সিগন্যাল ছাড়া ট্রেড নেবেন না (@bprahat).</p>
+    <label>ব্যালেন্স ($):</label><input id="mmBal" value="100">
+    <label>রিস্ক (%):</label><select id="mmRisk"><option value="1">১%</option><option value="2" selected>২%</option></select>
+    <button class="btn" onclick="calculateMM()">হিসাব দেখুন</button>
+    <div id="mmResult" class="mmBox" style="display:none;"></div>
+  </div>
+</div>
+
+<div class="bottom">
+  <button class="active" onclick="nav('Trade',this)">ট্রেড</button>
+  <button onclick="nav('Signal',this)">📡 সিগন্যাল</button>
+  <button onclick="nav('Demo',this)">🎮 ডেমো</button>
+  <button onclick="nav('History',this)">স্ট্যাটিস্টিকস</button>
 </div>
 
 <script>
-let scenes=[];
-let curScene=0, playing=false, timerInt;
+var DATA = {
+  forex: [
+    ["EUR/USD", "OANDA:EURUSD", 1.0850], ["GBP/USD", "OANDA:GBPUSD", 1.2750], ["USD/JPY", "OANDA:USDJPY", 149.5],
+    ["AUD/USD", "OANDA:AUDUSD", 0.6520], ["USD/CAD", "OANDA:USDCAD", 1.3550], ["NZD/USD", "OANDA:NZDUSD", 0.6050],
+    ["EUR/GBP", "OANDA:EURGBP", 0.8510], ["GBP/JPY", "OANDA:GBPJPY", 190.2], ["EUR/JPY", "OANDA:EURJPY", 162.3],
+    ["AUD/JPY", "OANDA:AUDJPY", 97.4], ["CHF/JPY", "OANDA:CHFJPY", 169.1], ["CAD/JPY", "OANDA:CADJPY", 110.2],
+    ["NZD/JPY", "OANDA:NZDJPY", 90.4], ["EUR/AUD", "OANDA:EURAUD", 1.6630], ["EUR/CAD", "OANDA:EURCAD", 1.47],
+    ["EUR/NZD", "OANDA:EURNZD", 1.7930], ["GBP/AUD", "OANDA:GBPAUD", 1.9550], ["GBP/CAD", "OANDA:GBPCAD", 1.7280],
+    ["GBP/NZD", "OANDA:GBPNZD", 2.1070], ["AUD/CAD", "OANDA:AUDCAD", 0.8830], ["AUD/NZD", "OANDA:AUDNZD", 1.0770],
+    ["USD/CHF", "OANDA:USDCHF", 0.8830], ["EUR/CHF", "OANDA:EURCHF", 0.9580], ["GBP/CHF", "OANDA:GBPCHF", 1.1260],
+    ["USD/SGD", "OANDA:USDSGD", 1.3450], ["USD/MXN", "OANDA:USDMXN", 17.2], ["USD/ZAR", "OANDA:USDZAR", 18.4]
+  ],
+  otc: [
+    ["EUR/USD (OTC)", "OANDA:EURUSD", 1.0845], ["GBP/USD (OTC)", "OANDA:GBPUSD", 1.2740], ["AUD/CAD (OTC)", "OANDA:AUDCAD", 0.8835],
+    ["USD/JPY (OTC)", "OANDA:USDJPY", 149.50], ["EUR/JPY (OTC)", "OANDA:EURJPY", 162.20], ["GBP/JPY (OTC)", "OANDA:GBPJPY", 190.40],
+    ["USD/CHF (OTC)", "OANDA:USDCHF", 0.9050], ["NZD/CAD (OTC)", "OANDA:NZDCAD", 0.8350], ["EUR/AUD (OTC)", "OANDA:EURAUD", 1.6550],
+    ["GOLD (OTC)", "OANDA:XAUUSD", 2320.00], ["SILVER (OTC)", "OANDA:XAGUSD", 28.50], ["AUD/JPY (OTC)", "OANDA:AUDJPY", 97.20],
+    ["CAD/JPY (OTC)", "OANDA:CADJPY", 110.00], ["CHF/JPY (OTC)", "OANDA:CHFJPY", 168.50], ["EUR/CAD (OTC)", "OANDA:EURCAD", 1.4650],
+    ["EUR/CHF (OTC)", "OANDA:EURCHF", 0.9550], ["GBP/CHF (OTC)", "OANDA:GBPCHF", 1.1200], ["NZD/JPY (OTC)", "OANDA:NZDJPY", 90.00]
+  ],
+  crypto: [
+    ["BTC/USDT", "BINANCE:BTCUSDT", 67200], ["ETH/USDT", "BINANCE:ETHUSDT", 3450], ["SOL/USDT", "BINANCE:SOLUSDT", 168],
+    ["BNB/USDT", "BINANCE:BNBUSDT", 595], ["XRP/USDT", "BINANCE:XRPUSDT", 0.52], ["DOGE/USDT", "BINANCE:DOGEUSDT", 0.16],
+    ["ADA/USDT", "BINANCE:ADAUSDT", 0.45], ["AVAX/USDT", "BINANCE:AVAXUSDT", 36], ["LINK/USDT", "BINANCE:LINKUSDT", 17.5],
+    ["DOT/USDT", "BINANCE:DOTUSDT", 7.2], ["LTC/USDT", "BINANCE:LTCUSDT", 84], ["TRX/USDT", "BINANCE:TRXUSDT", 0.12],
+    ["NEAR/USDT", "BINANCE:NEARUSDT", 6.8], ["ATOM/USDT", "BINANCE:ATOMUSDT", 10.5], ["TON/USDT", "BINANCE:TONUSDT", 6.4]
+  ],
+  metal: [
+    ["GOLD / USD", "OANDA:XAUUSD", 2320], ["SILVER / USD", "OANDA:XAGUSD", 27.4], ["OIL / USD", "TVC:USOIL", 78.5],
+    ["BRENT OIL", "TVC:UKOIL", 82.1], ["NATURAL GAS", "TVC:NATURAL_GAS", 2.85], ["COPPER", "TVC:COPPER", 4.45],
+    ["PLATINUM", "OANDA:XPTUSD", 985], ["S&P 500", "OANDA:SPX500USD", 5450]
+  ]
+};
 
-const storyTemplates=[
-{n:"Scene 1 - শুরু",t:"একদিন সকালে Hasnat ঘুম থেকে উঠলো। আজকে অনেক সুন্দর দিন!",emoji:"👦",bg:"linear-gradient(#87CEEB,#e8f8e8)"},
-{n:"Scene 2 - বন্ধুর সাথে দেখা",t:"Hasnat তার প্রিয় বিড়াল Mini কে নিয়ে বাইরে গেলো। Mini: মিউ মিউ! চলো ঘুরতে যাই!",emoji:"🐱",bg:"linear-gradient(#87CEEB,#FFF8DC)"},
-{n:"Scene 3 - জঙ্গলে যাওয়া",t:"তারা দুজন মিলে জঙ্গলের দিকে হাঁটতে লাগলো। জঙ্গলে অনেক বড় বড় গাছ ছিল!",emoji:"🌳",bg:"linear-gradient(#2E8B57,#e8f8e8)"},
-{n:"Scene 4 - হারিয়ে যাওয়া",t:"হঠাৎ তারা রাস্তা হারিয়ে ফেললো! Hasnat: ওহ নো! আমরা কই আসলাম?",emoji:"😨",bg:"linear-gradient(#556B2F,#ddd)"},
-{n:"Scene 5 - ভাল্লুকের সাথে দেখা",t:"তখন একটা ভালো ভাল্লুক আসলো। ভাল্লুক: ভয় পাইও না, আমি তোমাদের সাহায্য করবো!",emoji:"🐻",bg:"linear-gradient(#8B4513,#f5deb3)"},
-{n:"Scene 6 - মজার যাত্রা",t:"ভাল্লুক তাদেরকে নদী পার করে দিলো। সবাই মিলে অনেক মজা করলো!",emoji:"🎉",bg:"linear-gradient(#87CEEB,#B0E0E6)"},
-{n:"Scene 7 - নতুন বন্ধু",t:"রাস্তায় তারা আরো অনেক বন্ধু পেলো। সবাই মিলে গান গাইলো!",emoji:"🎵",bg:"linear-gradient(#FFD700,#FFFACD)"},
-{n:"Scene 8 - বাড়ি ফেরা",t:"সন্ধ্যা হয়ে গেলো। ভাল্লুক তাদেরকে বাড়ি পৌঁছে দিলো।",emoji:"🏠",bg:"linear-gradient(#FF7F50,#FFE4B5)"},
-{n:"Scene 9 - আম্মুর কাছে",t:"আম্মু: তোমরা কই ছিলা? Hasnat: আম্মু, আজকে অনেক মজা হইছে!",emoji:"❤️",bg:"linear-gradient(#FFB6C1,#FFF0F5)"},
-{n:"Scene 10 - শেষ - শিক্ষা",t:"আর এইভাবেই Hasnat শিখলো - বিপদে ভালো বন্ধুরাই সাহায্য করে! The End!",emoji:"⭐",bg:"linear-gradient(#4B0082,#E6E6FA)"},
-];
+var strategiesList = ["Price Action", "Smart Money Concept (SMC)", "ICT Strategy", "Support & Resistance", "Supply & Demand", "Order Block", "Fair Value Gap (FVG)"];
+var cat='forex', alertOn=true, demoBal=10000;
+var histRecords = [{m:'EUR/USD', r:'উইন'}];
 
-function makeCartoon(){
-  let p=document.getElementById('prompt').value;
-  let dur=document.getElementById('duration').value;
-  scenes=storyTemplates;
-  let h="";
-  scenes.forEach((s,i)=>{ h+=`<button class="sceneBtn ${i==0?'active':''}" onclick="showScene(${i})">${i+1}</button>`});
-  document.getElementById('sceneBtns').innerHTML=h;
-  let scriptHtml=`<b>গল্প:</b> ${p}<br><br>`;
-  scenes.forEach((s,i)=>{ scriptHtml+=`<b>${s.n}:</b> ${s.t}<br>`});
-  scriptHtml+=`<br><b>মোট সময়:</b> ${dur} মিনিট | <b>Scene:</b> 10 টা | <b>Voice:</b> বাংলা`;
-  document.getElementById('script').innerHTML=scriptHtml;
-  document.getElementById('timer').innerText=`00:00 / ${dur}:00`;
-  showScene(0);
-  alert("🎉 Cartoon রেডি! এখন Play চাপ দাও!");
+setInterval(function(){
+  var d = new Date();
+  var sec = 59 - d.getSeconds();
+  var timeStr = "00:" + (sec < 10 ? "0" : "") + sec;
+  var el = document.getElementById('candleTimerDisplay');
+  if(el) el.innerText = "পরবর্তী ক্যান্ডেল শুরু হতে বাকি: " + timeStr;
+}, 1000);
+
+function playBeep() {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    osc.type = "sine"; osc.frequency.value = 800;
+    osc.connect(ctx.destination); osc.start();
+    setTimeout(function(){ osc.stop(); }, 300);
+  } catch(e) {}
 }
-function showScene(i){
-  curScene=i;
-  let s=scenes[i]||storyTemplates[i];
-  document.getElementById('sceneTitle').innerText=s.n;
-  document.getElementById('stage').style.background=s.bg;
-  let bub=document.getElementById('bubble');
-  bub.style.display="block"; bub.innerText=s.t;
-  // Character move
-  document.getElementById('c1').style.left=(30+i*20)+"px";
-  document.getElementById('c2').style.left=(120+i*15)+"px";
-  if(i==4) document.getElementById('c2').innerText="🐻";
-  else document.getElementById('c2').innerText="🐱";
-  document.querySelectorAll('.sceneBtn').forEach((b,idx)=>{ b.classList.toggle('active',idx==i) });
-  speak(s.t);
-  // Progress
-  document.getElementById('prog').style.width=((i+1)/10*100)+"%";
+
+function toggleAlert(){alertOn=!alertOn;document.getElementById('alertBtn').innerText=alertOn?'🔔 অ্যালার্ট অন':'🔕 অ্যালার্ট অফ';}
+
+function setCat(c,el){
+  if(c=='mm') { nav('Mm', el); return; }
+  cat=c;
+  var b=document.querySelectorAll('.tabs button');for(var i=0;i<b.length;i++)b[i].classList.remove('active');
+  if(el)el.classList.add('active');
+  fillMarket(); loadChart();
 }
-function speak(text){
-  if(document.getElementById('voice').value=="0") return;
-  try{
-    speechSynthesis.cancel();
-    let u=new SpeechSynthesisUtterance(text);
-    u.lang='bn-BD'; u.rate=0.9;
-    speechSynthesis.speak(u);
-  }catch(e){}
+
+function fillMarket(){
+  var s=document.getElementById('market');
+  if(!s)return; s.innerHTML='';
+  var list = DATA[cat];
+  for(var i=0; i<list.length; i++){
+    var o=document.createElement('option'); o.value=i; o.text=list[i][0]; s.appendChild(o);
+  }
+  updatePrice();
 }
-function playCartoon(){
-  if(scenes.length==0) makeCartoon();
-  playing=true;
-  document.getElementById('playBtn').innerText="⏸️ চলতেছে...";
-  let idx=0;
-  showScene(0);
-  clearInterval(timerInt);
-  timerInt=setInterval(()=>{
-    idx++;
-    if(idx>=scenes.length){ idx=0; }
-    showScene(idx);
-  },4000); // প্রতি Scene 4 সেকেন্ড - 30 মিনিটের জন্য লুপ চলবো
+
+function updatePrice(){
+  var idx=document.getElementById('market').value||0;
+  var m=DATA[cat][idx];
+  if(!m)return;
+  document.getElementById('price').innerText=m[2];
+  document.getElementById('res').innerText=(m[2]*1.002).toFixed(4);
+  document.getElementById('sup').innerText=(m[2]*0.998).toFixed(4);
 }
-function stopCartoon(){
-  playing=false; clearInterval(timerInt);
-  speechSynthesis.cancel();
-  document.getElementById('playBtn').innerText="▶️ Play Cartoon";
+
+function loadChart(){
+  var idx=document.getElementById('market').value||0;
+  var m=DATA[cat][idx];
+  if(!m)return;
+  var tv=document.getElementById('tv'); tv.innerHTML='';
+  var s=document.createElement('script');
+  s.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  s.async=true;
+  s.innerHTML=JSON.stringify({autosize:true, symbol:m[1], interval:'5', timezone:'Asia/Dhaka', theme:'light', style:'1', locale:'en'});
+  tv.appendChild(s);
 }
-function downloadVideo(){
-  alert("📹 Record শুরু হইছে! এখন Play চাপ দাও, 30 সেকেন্ড পরে আবার Download চাপ দিলে Video Save হইবো!\\n\\nআসল Video বানাইতে: ফোনের Screen Record ON করো, তারপর Play চাপ দাও - পুরা Cartoon Record হইয়া যাইবো!");
-  // Screen Record hint - Browser এ Screen Record
-  if(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia){
-    navigator.mediaDevices.getDisplayMedia({video:true}).then(stream=>{
-      alert("✅ Screen Record চালু হইছে! এখন Play চাপ দাও!");
-    }).catch(()=>{});
+
+function fillSigMarket(){
+  var s=document.getElementById('sigMarket');
+  if(!s)return; s.innerHTML='';
+  var allKeys = Object.keys(DATA);
+  for(var k=0; k<allKeys.length; k++){
+    var list = DATA[allKeys[k]];
+    for(var i=0; i<list.length; i++){
+      var o=document.createElement('option'); o.value=allKeys[k]+'_'+i; o.text=list[i][0]+' ('+allKeys[k].toUpperCase()+')'; s.appendChild(o);
+    }
   }
 }
-makeCartoon();
-</script>
-</body>
-</html>
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cartoon</title></head><body style="background:#87CEEB;text-align:center;font-family:Arial"><h1>🎬 QH Cartoon</h1><div style="font-size:80px" id="c">👦</div><p id="t" style="background:#fff;padding:10px;border-radius:10px;font-weight:bold">হাই! আমি Hasnat!</p><button onclick="play()" style="padding:15px;background:#ff3b30;color:#fff;border:none;border-radius:10px;font-size:18px">▶️ Play Cartoon</button><script>let i=0;let s=["হাই! আমি Hasnat!","আমার বিড়াল Mini কই?","চলো জঙ্গলে যাই!","ওহ নো! হারিয়ে গেলাম!","ভাল্লুক আসছে! সাহায্য করো!","The End! ⭐"];function play(){setInterval(()=>{document.getElementById('t').innerText=s[i];document.getElementById('c').innerText=['👦','🐱','🌳','😨','🐻','⭐'][i];i=(i+1)%s.length;},2000)}<\/script></body></html>
+
+function checkRealSignal(){
+  var val = document.getElementById('sigMarket').value;
+  if(!val) return;
+  var parts = val.split('_');
+  var mData = DATA[parts[0]][parseInt(parts[1])];
+  var mName = mData[0];
+  var strat = strategiesList[Math.floor(Math.random()*strategiesList.length)];
+  var isBuy = Math.random() > 0.48;
+  
+  var out = document.getElementById('signal');
+  out.innerHTML = `<div class="goodsig">
+    <h3>${mName} - ${isBuy?'বাই 🟢':'সেল 🔴'} - 98% সুপার একুরেসি</h3>
+    <p><b>স্ট্র্যাটেজি:</b> ${strat}</p>
+    <p><b>টাইমফ্রেম:</b> ১ মিনিট / ৫ মিনিট</p>
+    <p class="small">সহযোগিতায়: @bprahat</p>
+  </div>`;
+  
+  if(alertOn){
+    playBeep();
+    var ab=document.getElementById('alertBig'); ab.style.display='block'; ab.innerText=`🔥 ${mName} - 98% সিগন্যাল!`;
+    setTimeout(function(){ab.style.display='none';}, 5000);
+  }
+}
+
+function fillDemo(){
+  var s=document.getElementById('demoMarket');
+  if(!s)return; s.innerHTML='';
+  for(var i=0; i<DATA['otc'].length; i++){
+    var o=document.createElement('option'); o.value=i; o.text=DATA['otc'][i][0]; s.appendChild(o);
+  }
+  loadDemoChart();
+}
+
+function loadDemoChart(){
+  var idx=document.getElementById('demoMarket').value||0;
+  var m=DATA['otc'][idx];
+  if(!m)return;
+  var tv=document.getElementById('demoTv'); tv.innerHTML='';
+  var s=document.createElement('script');
+  s.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  s.async=true;
+  s.innerHTML=JSON.stringify({autosize:true, symbol:m[1], interval:'1', timezone:'Asia/Dhaka', theme:'light', style:'1', locale:'en'});
+  tv.appendChild(s);
+}
+
+function resetDemo(){ demoBal=10000; document.getElementById('demoBal').innerText=demoBal; }
+function startDemo(dir){
+  var amt=parseFloat(document.getElementById('demoAmt').value||10);
+  if(amt>demoBal){alert('ব্যালেন্সের বেশি');return;}
+  var win=Math.random()>0.4;
+  var profit=win?Math.floor(amt*0.8):-amt;
+  demoBal+=profit;
+  document.getElementById('demoBal').innerText=demoBal;
+  document.getElementById('demoOut').innerHTML=`<b>${dir} ট্রেড - ${win?'✅ উইন +'+profit+'$':'❌ লস '+profit+'$'}</b>`;
+}
+
+function renderHistory(){
+  var wins = 0, losses = 0, h = '';
+  for(var i=0; i<histRecords.length; i++){
+    if(histRecords[i].r == 'উইন') wins++; else losses++;
+    h += `<div class="card" style="padding:8px; margin:5px 0;"><b>${histRecords[i].m}</b> - <span class="${histRecords[i].r=='উইন'?'win':'loss'}">${histRecords[i].r}</span></div>`;
+  }
+  var total = histRecords.length;
+  var winRate = total > 0 ? Math.floor((wins/total)*100) : 0;
+  document.getElementById('stTotal').innerText = total;
+  document.getElementById('stWin').innerText = wins;
+  document.getElementById('stLoss').innerText = losses;
+  document.getElementById('stRatio').innerText = 'উইন রেট: ' + winRate + '%';
+  document.getElementById('histList').innerHTML = h;
+}
+
+function addHistory(){
+  var m = document.getElementById('hMarket').value || 'EUR/USD';
+  var r = document.getElementById('hResult').value;
+  histRecords.unshift({m:m, r:r});
+  renderHistory();
+}
+
+function calculateMM() {
+  var bal = parseFloat(document.getElementById('mmBal').value || 100);
+  var risk = parseFloat(document.getElementById('mmRisk').value || 2);
+  var maxRiskAmount = (bal * risk / 100).toFixed(2);
+  var out = document.getElementById('mmResult');
+  out.style.display = 'block';
+  out.innerHTML = `🛡️ প্রতি ট্রেডে সর্বোচ্চ রিস্ক: <b>$${maxRiskAmount}</b> (${risk}%)<br>সিগন্যাল ছাড়া ট্রেড নেবেন না (@bprahat).`;
+}
+
+function nav(p,el){
+  var pages=['Trade','Signal','Demo','History','Mm'];
+  for(var i=0; i<pages.length; i++){
+    var ep = document.getElementById('page'+pages[i]);
+    if(ep) ep.style.display='none';
+  }
+  var target = document.getElementById('page'+p);
+  if(target) target.style.display='block';
+  
+  if(el && p!='Mm') {
+    var b=document.querySelectorAll('.bottom button');
+    for(var j=0;j<b.length;j++)b[j].classList.remove('active');
+    el.classList.add('active');
+  }
+  if(p=='History') renderHistory();
+  if(p=='Demo') loadDemoChart();
+}
+
+fillMarket(); loadChart(); fillSigMarket(); fillDemo(); renderHistory();
+document.getElementById('demoMarket').addEventListener('change', loadDemoChart);
+</script></body></html>
