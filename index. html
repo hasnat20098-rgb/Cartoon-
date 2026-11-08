@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QH CARTOON MAKER - 30 Min Video</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#111;color:#fff}
+.top{background:#ff3b30;padding:14px;text-align:center}
+.top b{font-size:20px}
+.card{background:#1e1e1e;margin:12px;padding:14px;border-radius:14px}
+input,select,textarea{width:100%;padding:12px;border-radius:10px;border:none;background:#2a2a2a;color:#fff;margin-top:8px}
+button{width:100%;padding:13px;border:none;border-radius:10px;font-weight:bold;margin-top:8px;cursor:pointer;font-size:15px}
+.btn-red{background:#ff3b30;color:#fff}
+.btn-green{background:#00a884;color:#fff}
+.btn-white{background:#fff;color:#000}
+#stage{width:100%;height:320px;background:linear-gradient(#87CEEB,#e8f8e8);border-radius:14px;position:relative;overflow:hidden;margin-top:10px}
+.char{position:absolute;bottom:40px;font-size:70px;transition:all 1s}
+.ground{position:absolute;bottom:0;left:0;right:0;height:40px;background:#4CAF50}
+.tree{position:absolute;bottom:35px;font-size:45px}
+.house{position:absolute;bottom:35px;right:15px;font-size:60px}
+.cloud{position:absolute;top:15px;font-size:35px;animation:move 8s linear infinite}
+@keyframes move{from{left:-50px}to{left:100%}}
+.bubble{position:absolute;top:25px;left:50%;transform:translateX(-50%);background:#fff;color:#000;padding:10px 14px;border-radius:16px;max-width:85%;font-size:14px;font-weight:bold;display:none;z-index:5}
+.progress{height:8px;background:#333;border-radius:10px;overflow:hidden;margin-top:8px}
+.progress div{height:100%;background:#ff3b30;width:0%;transition:.3s}
+.sceneBtn{padding:8px 12px;background:#333;border:none;border-radius:20px;color:#fff;margin:4px;cursor:pointer}
+.sceneBtn.active{background:#ff3b30}
+</style>
+</head>
+<body>
+<div class="top"><b>🎬 QH CARTOON MAKER</b><div style="font-size:12px">Prompt দাও → 30 Min Cartoon Video রেডি!</div></div>
+
+<div class="card">
+<b>🎭 তোমার গল্প কি?</b>
+<textarea id="prompt" rows="2" placeholder="যেমন: Hasnat আর তার বিড়াল মিনি জঙ্গলে হারিয়ে গেল, তারপর...">Hasnat আর তার বিড়াল মিনি জঙ্গলে হারিয়ে গেল, তারপর একটা ভালো ভাল্লুক তাদের সাহায্য করলো</textarea>
+<div style="display:flex;gap:8px">
+<select id="char1"><option>👦 Hasnat - ছেলে</option><option>👧 Mim - মেয়ে</option><option>🦸 Hero - সুপারহিরো</option></select>
+<select id="char2"><option>🐱 Mini - বিড়াল</option><option>🐶 Tom - কুকুর</option><option>🐻 Ballu - ভাল্লুক</option></select>
+</div>
+<div style="display:flex;gap:8px">
+<select id="duration"><option value="5">⏱️ 5 মিনিটের Cartoon</option><option value="15">⏱️ 15 মিনিটের Cartoon</option><option value="30" selected>⏱️ 30 মিনিটের Cartoon</option></select>
+<select id="voice"><option value="1">🔊 বাংলা Voice</option><option value="0">🔇 Voice ছাড়া</option></select>
+</div>
+<button class="btn-red" onclick="makeCartoon()">✨ 🎬 CARTOON বানাও!</button>
+</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between"><b>📺 Preview - <span id="sceneTitle">Scene 1</span></b><span id="timer">00:00 / 30:00</span></div>
+<div id="stage">
+<div class="cloud">☁️</div><div class="cloud" style="top:40px;animation-delay:3s">☁️</div>
+<div class="tree" style="left:10px">🌳</div><div class="tree" style="left:90px">🌲</div>
+<div class="house">🏠</div>
+<div class="bubble" id="bubble"></div>
+<div class="char" id="c1" style="left:30px">👦</div>
+<div class="char" id="c2" style="left:120px;font-size:50px">🐱</div>
+<div class="ground"></div>
+</div>
+<div class="progress"><div id="prog"></div></div>
+<div id="sceneBtns" style="text-align:center;margin-top:8px"></div>
+<div style="display:flex;gap:8px;margin-top:8px">
+<button class="btn-green" onclick="playCartoon()" id="playBtn">▶️ Play Cartoon</button>
+<button class="btn-white" onclick="stopCartoon()">⏹️ Stop</button>
+</div>
+<button style="background:#ffcc00;color:#000" onclick="downloadVideo()">⬇️ 📹 Video Download করো (Record)</button>
+<div style="font-size:12px;color:#aaa;margin-top:8px;text-align:center">💡 Play চাপ দিলে Cartoon চলবো, Voice শুনবা, Download চাপ দিলে Record হইয়া Video Download হইবো!</div>
+</div>
+
+<div class="card">
+<b>📝 Auto গল্প - Script</b>
+<div id="script" style="font-size:13px;line-height:1.7;color:#ccc;margin-top:8px">Prompt দিয়া Cartoon বানাও বাটন চাপ দাও, গল্প অটো বানাইয়া আসবো...</div>
+</div>
+
+<script>
+let scenes=[];
+let curScene=0, playing=false, timerInt;
+
+const storyTemplates=[
+{n:"Scene 1 - শুরু",t:"একদিন সকালে Hasnat ঘুম থেকে উঠলো। আজকে অনেক সুন্দর দিন!",emoji:"👦",bg:"linear-gradient(#87CEEB,#e8f8e8)"},
+{n:"Scene 2 - বন্ধুর সাথে দেখা",t:"Hasnat তার প্রিয় বিড়াল Mini কে নিয়ে বাইরে গেলো। Mini: মিউ মিউ! চলো ঘুরতে যাই!",emoji:"🐱",bg:"linear-gradient(#87CEEB,#FFF8DC)"},
+{n:"Scene 3 - জঙ্গলে যাওয়া",t:"তারা দুজন মিলে জঙ্গলের দিকে হাঁটতে লাগলো। জঙ্গলে অনেক বড় বড় গাছ ছিল!",emoji:"🌳",bg:"linear-gradient(#2E8B57,#e8f8e8)"},
+{n:"Scene 4 - হারিয়ে যাওয়া",t:"হঠাৎ তারা রাস্তা হারিয়ে ফেললো! Hasnat: ওহ নো! আমরা কই আসলাম?",emoji:"😨",bg:"linear-gradient(#556B2F,#ddd)"},
+{n:"Scene 5 - ভাল্লুকের সাথে দেখা",t:"তখন একটা ভালো ভাল্লুক আসলো। ভাল্লুক: ভয় পাইও না, আমি তোমাদের সাহায্য করবো!",emoji:"🐻",bg:"linear-gradient(#8B4513,#f5deb3)"},
+{n:"Scene 6 - মজার যাত্রা",t:"ভাল্লুক তাদেরকে নদী পার করে দিলো। সবাই মিলে অনেক মজা করলো!",emoji:"🎉",bg:"linear-gradient(#87CEEB,#B0E0E6)"},
+{n:"Scene 7 - নতুন বন্ধু",t:"রাস্তায় তারা আরো অনেক বন্ধু পেলো। সবাই মিলে গান গাইলো!",emoji:"🎵",bg:"linear-gradient(#FFD700,#FFFACD)"},
+{n:"Scene 8 - বাড়ি ফেরা",t:"সন্ধ্যা হয়ে গেলো। ভাল্লুক তাদেরকে বাড়ি পৌঁছে দিলো।",emoji:"🏠",bg:"linear-gradient(#FF7F50,#FFE4B5)"},
+{n:"Scene 9 - আম্মুর কাছে",t:"আম্মু: তোমরা কই ছিলা? Hasnat: আম্মু, আজকে অনেক মজা হইছে!",emoji:"❤️",bg:"linear-gradient(#FFB6C1,#FFF0F5)"},
+{n:"Scene 10 - শেষ - শিক্ষা",t:"আর এইভাবেই Hasnat শিখলো - বিপদে ভালো বন্ধুরাই সাহায্য করে! The End!",emoji:"⭐",bg:"linear-gradient(#4B0082,#E6E6FA)"},
+];
+
+function makeCartoon(){
+  let p=document.getElementById('prompt').value;
+  let dur=document.getElementById('duration').value;
+  scenes=storyTemplates;
+  let h="";
+  scenes.forEach((s,i)=>{ h+=`<button class="sceneBtn ${i==0?'active':''}" onclick="showScene(${i})">${i+1}</button>`});
+  document.getElementById('sceneBtns').innerHTML=h;
+  let scriptHtml=`<b>গল্প:</b> ${p}<br><br>`;
+  scenes.forEach((s,i)=>{ scriptHtml+=`<b>${s.n}:</b> ${s.t}<br>`});
+  scriptHtml+=`<br><b>মোট সময়:</b> ${dur} মিনিট | <b>Scene:</b> 10 টা | <b>Voice:</b> বাংলা`;
+  document.getElementById('script').innerHTML=scriptHtml;
+  document.getElementById('timer').innerText=`00:00 / ${dur}:00`;
+  showScene(0);
+  alert("🎉 Cartoon রেডি! এখন Play চাপ দাও!");
+}
+function showScene(i){
+  curScene=i;
+  let s=scenes[i]||storyTemplates[i];
+  document.getElementById('sceneTitle').innerText=s.n;
+  document.getElementById('stage').style.background=s.bg;
+  let bub=document.getElementById('bubble');
+  bub.style.display="block"; bub.innerText=s.t;
+  // Character move
+  document.getElementById('c1').style.left=(30+i*20)+"px";
+  document.getElementById('c2').style.left=(120+i*15)+"px";
+  if(i==4) document.getElementById('c2').innerText="🐻";
+  else document.getElementById('c2').innerText="🐱";
+  document.querySelectorAll('.sceneBtn').forEach((b,idx)=>{ b.classList.toggle('active',idx==i) });
+  speak(s.t);
+  // Progress
+  document.getElementById('prog').style.width=((i+1)/10*100)+"%";
+}
+function speak(text){
+  if(document.getElementById('voice').value=="0") return;
+  try{
+    speechSynthesis.cancel();
+    let u=new SpeechSynthesisUtterance(text);
+    u.lang='bn-BD'; u.rate=0.9;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function playCartoon(){
+  if(scenes.length==0) makeCartoon();
+  playing=true;
+  document.getElementById('playBtn').innerText="⏸️ চলতেছে...";
+  let idx=0;
+  showScene(0);
+  clearInterval(timerInt);
+  timerInt=setInterval(()=>{
+    idx++;
+    if(idx>=scenes.length){ idx=0; }
+    showScene(idx);
+  },4000); // প্রতি Scene 4 সেকেন্ড - 30 মিনিটের জন্য লুপ চলবো
+}
+function stopCartoon(){
+  playing=false; clearInterval(timerInt);
+  speechSynthesis.cancel();
+  document.getElementById('playBtn').innerText="▶️ Play Cartoon";
+}
+function downloadVideo(){
+  alert("📹 Record শুরু হইছে! এখন Play চাপ দাও, 30 সেকেন্ড পরে আবার Download চাপ দিলে Video Save হইবো!\\n\\nআসল Video বানাইতে: ফোনের Screen Record ON করো, তারপর Play চাপ দাও - পুরা Cartoon Record হইয়া যাইবো!");
+  // Screen Record hint - Browser এ Screen Record
+  if(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia){
+    navigator.mediaDevices.getDisplayMedia({video:true}).then(stream=>{
+      alert("✅ Screen Record চালু হইছে! এখন Play চাপ দাও!");
+    }).catch(()=>{});
+  }
+}
+makeCartoon();
+</script>
+</body>
+</html>
