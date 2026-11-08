@@ -161,3 +161,4 @@ makeCartoon();
 </script>
 </body>
 </html>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cartoon</title></head><body style="background:#87CEEB;text-align:center;font-family:Arial"><h1>🎬 QH Cartoon</h1><div style="font-size:80px" id="c">👦</div><p id="t" style="background:#fff;padding:10px;border-radius:10px;font-weight:bold">হাই! আমি Hasnat!</p><button onclick="play()" style="padding:15px;background:#ff3b30;color:#fff;border:none;border-radius:10px;font-size:18px">▶️ Play Cartoon</button><script>let i=0;let s=["হাই! আমি Hasnat!","আমার বিড়াল Mini কই?","চলো জঙ্গলে যাই!","ওহ নো! হারিয়ে গেলাম!","ভাল্লুক আসছে! সাহায্য করো!","The End! ⭐"];function play(){setInterval(()=>{document.getElementById('t').innerText=s[i];document.getElementById('c').innerText=['👦','🐱','🌳','😨','🐻','⭐'][i];i=(i+1)%s.length;},2000)}<\/script></body></html>
